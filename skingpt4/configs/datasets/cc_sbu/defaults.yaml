@@ -1,0 +1,7 @@
+datasets:
+  cc_sbu:
+    data_type: images
+    build_info:
+      #storage: /ibex/ai/project/c2032/skingpt/SkinGPT-4/dataset/cc_sbu/cc_sbu_dataset/{00000..01255}.tar
+      #storage: /home/juexiao_zhou/disk/SkinGPT-4/dataset/cc_sbu/cc_sbu_dataset/{00000..01255}.tar
+      storage: /home/zhouj0d/Science/PID27.ChatSkin/SkinGPT-4/dataset/cc_sbu/cc_sbu_dataset/{00000..01255}.tar

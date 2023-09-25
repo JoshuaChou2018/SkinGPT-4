@@ -1,0 +1,7 @@
+datasets:
+  skin_concept:
+    data_type: images
+    build_info:
+      storage: /ibex/ai/project/c2032/skingpt/SkinGPT-4/dataset/skin_dataset/skin_align
+      #storage: /home/zhouj0d/disk4/PID27.ChatSkin/MiniGPT-4/dataset/skin_dataset/skin_align
+      #storage: /home/juexiao_zhou/disk/SkinGPT-4/dataset/skin_dataset/skin_align
