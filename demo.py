@@ -101,8 +101,8 @@ def gradio_answer(chatbot, chat_state, img_list, num_beams, temperature):
     chatbot[-1][1] = llm_message
     return chatbot, chat_state, img_list
 
-title = """<h1 align="center">Demo of SkinGPT, Powered by MiniGPT4</h1>"""
-description = """<h3>This is the demo of SkinGPT. Upload your images and start chatting!</h3>"""
+title = """<h1 align="center">Demo of SkinGPT-4</h1>"""
+description = """<h3>This is the demo of SkinGPT-4 (version June, 2023). Upload your images and start chatting!</h3>"""
 article = """ """
 #TODO show examples below
 
@@ -138,7 +138,7 @@ with gr.Blocks() as demo:
         with gr.Column():
             chat_state = gr.State()
             img_list = gr.State()
-            chatbot = gr.Chatbot(label='SkinGPT')
+            chatbot = gr.Chatbot(label='SkinGPT-4')
             text_input = gr.Textbox(label='User', placeholder='Please upload your image first', interactive=False)
     
     upload_button.click(upload_img, [image, text_input, chat_state], [image, text_input, upload_button, chat_state, img_list])
