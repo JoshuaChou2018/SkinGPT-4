@@ -23,6 +23,9 @@ mamba install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=
 
 - Please feel free to keep in touch with **xin.gao@kaust.edu.sa** and **juexiao.zhou@kaust.edu.sa** for potential collaboration.
 
+## Prepare weight for LLMs
+
+- Please refer to: https://github.com/Vision-CAIR/MiniGPT-4
 
 ## Launching Demo Locally
 
