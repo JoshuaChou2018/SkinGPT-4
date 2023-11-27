@@ -104,6 +104,7 @@ class CCSBUAlignBuilder(BaseDatasetBuilder):
 
         return datasets
 
+
 @registry.register_builder("skin_concept")
 class CCSBUAlignBuilder(BaseDatasetBuilder):
     train_dataset_cls = CCSBUAlignDataset

@@ -1,16 +1,14 @@
 model:
   arch: skin_gpt4
   model_type: pretrain_vicuna
-  #model_type: pretrain_bloomz7b1
-  #model_type: pretrain_bloomchat176b
   freeze_vit: True
   freeze_qformer: True
   max_txt_len: 160
   end_sym: "###"
   low_resource: False
   prompt_path: "prompts/alignment_skin.txt"
-  prompt_template: '### Instruction: {} ### Response: '
-  ckpt: '/home/zhouj0d/disk4/PID27.ChatSkin/SkinGPT-4/weights/skingpt4_bloomz7b1_finetune_v4.2_small_class.pth'
+  prompt_template: '###Human: {} ###Assistant: '
+  ckpt: '/home/zhouj0d/disk4/PID27.ChatSkin/SkinGPT-4-llama2/weights/skingpt_v4.2.pth'
 
 
 datasets:

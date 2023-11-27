@@ -12,10 +12,9 @@ model:
   # Q-Former
   num_query_token: 32
 
-  # Vicuna
-  #llm_model: "/home/juexiao_zhou/disk/SkinGPT-4/weights/falcon-7b-instruct"
-  #llm_model: "/ibex/ai/project/c2032/skingpt/SkinGPT-4/weights/falcon-7b-instruct"
-  llm_model: "/home/zhouj0d/disk4/PID27.ChatSkin/SkinGPT-4/weights/falcon-7b-instruct"
+  # llama2
+  #llm_model: "/home/zhouj0d/c2032/skingpt/SkinGPT-4-llama2/weights/Llama-2-13b-chat-hf"
+  llm_model: "/home/zhouj0d/Science/PID27.ChatSkin/SkinGPT-4-llama2/weights/Llama-2-13b-chat-hf"
 
   # generation configs
   prompt: ""

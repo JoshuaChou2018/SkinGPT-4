@@ -81,24 +81,17 @@ class RunnerBase:
         A property to get the DDP-wrapped model on the device.
         """
         # move model to device
-        print('runner base: ', self._model.llm_path)
         if self._model.device != self.device:
-            ## 大模型并行的时候有问题, 因为一张卡装不下
-            if 'falcon-40b-instruct' in self._model.llm_path:
-                self._wrapped_model = self._model
+            self._model = self._model.to(self.device)
 
+            # distributed training wrapper
+            if self.use_distributed:
+                if self._wrapped_model is None:
+                    self._wrapped_model = DDP(
+                        self._model, device_ids=[self.config.run_cfg.gpu]
+                    )
             else:
-                self._model = self._model.to(self.device)
-
-                # distributed training wrapper
-
-                if self.use_distributed:
-                    if self._wrapped_model is None:
-                        self._wrapped_model = DDP(
-                            self._model, device_ids=[self.config.run_cfg.gpu]
-                        )
-                else:
-                    self._wrapped_model = self._model
+                self._wrapped_model = self._model
 
         return self._wrapped_model
 
@@ -471,6 +464,7 @@ class RunnerBase:
 
         # TODO In validation, you need to compute loss as well as metrics
         # TODO consider moving to model.before_evaluation()
+        model = self.unwrap_dist_model(self.model)
         if not skip_reload and cur_epoch == "best":
             model = self._reload_best_model(model)
         model.eval()
@@ -489,8 +483,6 @@ class RunnerBase:
             )
 
     def unwrap_dist_model(self, model):
-        if 'falcon-40b-instruct' in self._model.llm_path:
-            return model
         if self.use_distributed:
             return model.module
         else:

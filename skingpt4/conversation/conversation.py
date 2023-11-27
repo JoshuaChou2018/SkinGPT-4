@@ -133,7 +133,6 @@ class Chat:
             conv.messages[-1][1] = ' '.join([conv.messages[-1][1], text])
         else:
             conv.append_message(conv.roles[0], text)
-        print(conv.messages)
 
     def answer(self, conv, img_list, max_new_tokens=300, num_beams=1, min_length=1, top_p=0.9,
                repetition_penalty=1.0, length_penalty=1, temperature=1.0, max_length=2000):
@@ -152,7 +151,6 @@ class Chat:
             inputs_embeds=embs,
             max_new_tokens=max_new_tokens,
             stopping_criteria=self.stopping_criteria,
-            pad_token_id=self.model.llm_tokenizer.pad_token_id,
             num_beams=num_beams,
             do_sample=True,
             min_length=min_length,
@@ -167,11 +165,9 @@ class Chat:
         if output_token[0] == 1:  # some users find that there is a start token <s> at the beginning. remove it
             output_token = output_token[1:]
         output_text = self.model.llm_tokenizer.decode(output_token, add_special_tokens=False)
-        print('output_text: ', output_text)
         output_text = output_text.split('###')[0]  # remove the stop sign '###'
-        output_text = output_text.split('### Response:')[-1].strip().replace("<|endoftext|> ",'')
+        output_text = output_text.split('Assistant:')[-1].strip()
         conv.messages[-1][1] = output_text
-        print('conv.messages: ', conv.messages)
         return output_text, output_token.cpu().numpy()
 
     def upload_img(self, image, conv, img_list):
@@ -195,21 +191,17 @@ class Chat:
 
     def get_context_emb(self, conv, img_list):
         prompt = conv.get_prompt()
-        if len(conv.messages)<=2: # Human: <ImageHere>, Assistant: first answer
-            prompt_segs = prompt.split('<ImageHere>')
-            assert len(prompt_segs) == len(img_list) + 1, "Unmatched numbers of image placeholders and images."
-            seg_tokens = [
-                self.model.llm_tokenizer(
-                    seg, return_tensors="pt", add_special_tokens=i == 0).to(self.device).input_ids
-                # only add bos to the first seg
-                for i, seg in enumerate(prompt_segs)
-            ]
-            seg_embs = [self.model.llm_model.transformer.word_embeddings(seg_t) for seg_t in seg_tokens]
-            mixed_embs = [emb for pair in zip(seg_embs[:-1], img_list) for emb in pair] + [seg_embs[-1]]
-            mixed_embs = torch.cat(mixed_embs, dim=1)
-        else:
-            mixed_embs = self.model.llm_model.transformer.word_embeddings(self.model.llm_tokenizer(
-                    prompt, return_tensors="pt", add_special_tokens=True).to(self.device).input_ids)
+        prompt_segs = prompt.split('<ImageHere>')
+        assert len(prompt_segs) == len(img_list) + 1, "Unmatched numbers of image placeholders and images."
+        seg_tokens = [
+            self.model.llm_tokenizer(
+                seg, return_tensors="pt", add_special_tokens=i == 0).to(self.device).input_ids
+            # only add bos to the first seg
+            for i, seg in enumerate(prompt_segs)
+        ]
+        seg_embs = [self.model.llm_model.model.embed_tokens(seg_t) for seg_t in seg_tokens]
+        mixed_embs = [emb for pair in zip(seg_embs[:-1], img_list) for emb in pair] + [seg_embs[-1]]
+        mixed_embs = torch.cat(mixed_embs, dim=1)
         return mixed_embs
 
 

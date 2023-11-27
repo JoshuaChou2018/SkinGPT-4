@@ -2,6 +2,4 @@ datasets:
   cc_sbu_align:
     data_type: images
     build_info:
-      #storage: /ibex/ai/project/c2032/skingpt/SkinGPT-4/dataset/cc_sbu_align
-      storage: /home/zhouj0d/disk4/PID27.ChatSkin/SkinGPT-4/dataset/cc_sbu_align
-      #storage: /home/juexiao_zhou/disk/SkinGPT-4/dataset/cc_sbu_align
+      storage: /ibex/ai/project/c2032/skingpt/SkinGPT-4-llama2/dataset/cc_sbu_align

@@ -1,0 +1,27 @@
+model:
+  arch: skin_gpt4
+  model_type: pretrain_llama2_13bchat
+  freeze_vit: True
+  freeze_qformer: True
+  max_txt_len: 160
+  end_sym: "###"
+  prompt_path: "prompts/alignment_skin.txt"
+  prompt_template: '###Human: {} ###Assistant: '
+  #ckpt: '/home/zhouj0d/disk4/PID27.ChatSkin/SkinGPT-4-llama2/weights/skingpt4_llama2_13bchat_base_pretrain_stage1.pth'
+  #ckpt: '/home/zhouj0d/disk4/PID27.ChatSkin/SkinGPT-4-llama2/weights/skingpt4_llama2_13bchat_base_pretrain_stage2.pth'
+  #ckpt: '/home/zhouj0d/disk4/PID27.ChatSkin/SkinGPT-4-llama2/weights/skingpt4_llama2_13bchat_finetune_v1.2_concept.pth'
+  ckpt: '/home/zhouj0d/disk4/PID27.ChatSkin/SkinGPT-4-llama2/weights/skingpt4_llama2_13bchat_finetune_v4.2_small_class.pth'
+
+
+datasets:
+  cc_sbu_align:
+    vis_processor:
+      train:
+        name: "blip2_image_eval"
+        image_size: 224
+    text_processor:
+      train:
+        name: "blip_caption"
+
+run:
+  task: image_text_pretrain

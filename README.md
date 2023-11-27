@@ -12,24 +12,22 @@ King Abdullah University of Science and Technology, KAUST
 conda env create -f environment.yml
 conda activate skingpt4
 conda install -c conda-forge mamba=1.4.7
-pip install einops
 mamba install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.8 -c pytorch -c nvidia
 ```
 
 ## Download our trained weights
 
-**Our previous trained weights for skin disease diagnosis with only step-1 dataset and Vicuna could be downloaded at [skinGPT_v1.pth](https://drive.google.com/file/d/1PGBMBioipGxN5yfX6Okx4BGyPBm1prAF/view?usp=sharing).**
+- **Our previous trained weights for skin disease diagnosis with only step-1 dataset and Vicuna could be downloaded at [skinGPT_v1.pth](https://drive.google.com/file/d/1PGBMBioipGxN5yfX6Okx4BGyPBm1prAF/view?usp=sharing).**
 
-The latest model trained with both **public datasets** and the **proprietary dataset** based on **falcon-40b-instruct** and **llama-2-13b-chat-hf** are **not publicly available** currently.
+- The latest model trained with both **public datasets** and the **proprietary dataset** based on **falcon-40b-instruct** (deprecated) and **llama-2-13b-chat-hf** (code published only) are **not publicly available** currently.
 
-Please feel free to keep in touch with **xin.gao@kaust.edu.sa** and **juexiao.zhou@kaust.edu.sa** for potential collaboration.
+- Please feel free to keep in touch with **xin.gao@kaust.edu.sa** and **juexiao.zhou@kaust.edu.sa** for potential collaboration.
 
 
 ## Launching Demo Locally
 
 ```
 python demo.py --cfg-path eval_configs/skingpt4_eval_vicuna.yaml  --gpu-id 0
-python demo.py --cfg-path eval_configs/skingpt4_eval_falcon40b.yaml  --gpu-id 0
 python demo.py --cfg-path eval_configs/skingpt4_eval_llama2_13bchat.yaml  --gpu-id 0
 ```
 

@@ -12,7 +12,7 @@ from omegaconf import OmegaConf
 from skingpt4.common.registry import registry
 from skingpt4.models.base_model import BaseModel
 from skingpt4.models.blip2 import Blip2Base
-from skingpt4.models.skin_gpt4 import SkinGPT4
+from skingpt4.models.skin_gpt4 import skingpt4
 from skingpt4.processors.base_processor import BaseProcessor
 
 
@@ -20,7 +20,7 @@ __all__ = [
     "load_model",
     "BaseModel",
     "Blip2Base",
-    "SkinGPT4",
+    "skingpt4",
 ]
 
 

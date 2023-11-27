@@ -1,4 +1,4 @@
-name: minigpt4
+name: skingpt4
 channels:
   - pytorch
   - defaults

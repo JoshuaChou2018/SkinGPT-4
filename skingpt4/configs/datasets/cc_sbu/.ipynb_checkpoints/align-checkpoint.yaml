@@ -1,0 +1,5 @@
+datasets:
+  cc_sbu_align:
+    data_type: images
+    build_info:
+      storage: /home/zhouj0d/Science/PID27.ChatSkin/SkinGPT-4-llama2/skin_dataset_v2/skin_align

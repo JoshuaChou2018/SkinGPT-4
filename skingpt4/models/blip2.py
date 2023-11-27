@@ -61,7 +61,7 @@ class Blip2Base(BaseModel):
     def init_vision_encoder(
         cls, model_name, img_size, drop_path_rate, use_grad_checkpoint, precision
     ):
-        assert model_name == "eva_clip_g", "vit model must be eva_clip_g for current version of MiniGPT-4"
+        assert model_name == "eva_clip_g", "vit model must be eva_clip_g for current version of SkinGPT-4-llama2"
         visual_encoder = create_eva_vit_g(
             img_size, drop_path_rate, use_grad_checkpoint, precision
         )

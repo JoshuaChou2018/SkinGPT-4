@@ -7,23 +7,19 @@ import torch.nn as nn
 
 from skingpt4.common.registry import registry
 from skingpt4.models.blip2 import Blip2Base, disabled_train
-from transformers import AutoTokenizer, AutoModelForCausalLM, LlamaTokenizer, LlamaForCausalLM, BloomTokenizerFast, BloomForCausalLM
-from skingpt4.models.modeling_falcon import FalconForCausalLM
-from skingpt4.models.modeling_RW_40b import RWForCausalLM
-from torch.nn import BCEWithLogitsLoss, CrossEntropyLoss, LayerNorm, MSELoss
+from skingpt4.models.modeling_llama import LlamaForCausalLM
+from transformers import LlamaTokenizer
+
 
 @registry.register_model("skin_gpt4")
-class SkinGPT4(Blip2Base):
+class skingpt4(Blip2Base):
     """
-    BLIP2 GPT-LLM model.
+    BLIP2 GPT-LLAMA model.
     """
 
     PRETRAINED_MODEL_CONFIG_DICT = {
-        "pretrain_bloom7b": "configs/models/skingpt4_bloom7b.yaml",
-        "pretrain_bloomchat176b": "configs/models/skingpt4_bloomchat176b.yaml",
-        "pretrain_bloomz7b1": "configs/models/skingpt4_bloomz7b1.yaml",
-        "pretrain_falcon40b": "configs/models/skingpt4_falcon40b.yaml",
-        "pretrain_falcon7b": "configs/models/skingpt4_falcon7b.yaml",
+        "pretrain_vicuna": "configs/models/skingpt4_vicuna.yaml",
+        "pretrain_llama2_13bchat": "configs/models/skingpt4_llama2_13bchat.yaml",
     }
 
     def __init__(
@@ -87,78 +83,33 @@ class SkinGPT4(Blip2Base):
             logging.info("freeze Qformer")
         print('Loading Q-Former Done')
 
-        print('Loading LLM')
-        self.llm_tokenizer = AutoTokenizer.from_pretrained(llm_model, use_fast=False)
+        print('Loading LLM tokenizer')
+        self.llm_tokenizer = LlamaTokenizer.from_pretrained(llm_model, use_fast=False)
         self.llm_tokenizer.pad_token = self.llm_tokenizer.eos_token
-        print("token_id", self.llm_tokenizer.pad_token, self.llm_tokenizer.eos_token, self.llm_tokenizer.bos_token_id, self.llm_tokenizer.eos_token_id)
-        self.llm_tokenizer.bos_token_id = 11 # for training falcon, Nontype error
-        print("token_id", self.llm_tokenizer.pad_token, self.llm_tokenizer.eos_token, self.llm_tokenizer.bos_token_id,
-              self.llm_tokenizer.eos_token_id)
 
-        self.llm_path = llm_model
-        print('llm_model path: ', self.llm_path)
-        # vicuna version
-        if 'vicuna' in llm_model:
-            self.llm_tokenizer = LlamaTokenizer.from_pretrained(llm_model, use_fast=False)
-            if self.low_resource:
-                self.llama_model = LlamaForCausalLM.from_pretrained(
-                    llm_model,
-                    torch_dtype=torch.float16,
-                    load_in_8bit=True,
-                    device_map={'': device_8bit}
-                )
-            else:
-                self.llama_model = LlamaForCausalLM.from_pretrained(
-                    llm_model,
-                    torch_dtype=torch.float16,
-                )
-        # falcon version
-        elif 'falcon-7b-instruct' in llm_model:
-            if self.low_resource:
-                self.llm_model = FalconForCausalLM.from_pretrained(
-                    llm_model,
-                    torch_dtype=torch.float16,
-                    load_in_8bit=True,
-                    trust_remote_code=True,
-                    device_map = {'': device_8bit}
-                )
-            else:
-                self.llm_model = FalconForCausalLM.from_pretrained(
-                    llm_model,
-                    torch_dtype=torch.float16,
-                    trust_remote_code=True,
-                    device_map={'': device_8bit}
-                )
-        elif 'falcon-40b-instruct' in llm_model:
-            if self.low_resource:
-                self.llm_model = RWForCausalLM.from_pretrained(
-                    llm_model,
-                    torch_dtype=torch.float16,
-                    load_in_8bit=True,
-                    trust_remote_code=True,
-                    device_map={'': device_8bit}
-                )
-            else:
-                self.llm_model = RWForCausalLM.from_pretrained(
-                    llm_model,
-                    torch_dtype=torch.float16,
-                    trust_remote_code=True,
-                    device_map='auto'
-                )
+        print('Loading LLM model')
+        if self.low_resource:
+            self.llm_model = LlamaForCausalLM.from_pretrained(
+                llm_model,
+                torch_dtype=torch.float16,
+                load_in_8bit=True,
+                device_map={'': device_8bit}
+            )
         else:
-            print(f'{llm_model} not implemented')
+            self.llm_model = LlamaForCausalLM.from_pretrained(
+                llm_model,
+                torch_dtype=torch.float16,
+            )
 
         for name, param in self.llm_model.named_parameters():
             param.requires_grad = False
-        print(f'Loading LLM Done: {llm_model}')
+        print('Loading LLM Done')
 
-        self.llm_proj = nn.Linear(
+        self.llama_proj = nn.Linear(
             self.Qformer.config.hidden_size, self.llm_model.config.hidden_size
         )
         self.max_txt_len = max_txt_len
         self.end_sym = end_sym
-
-        print('projection layer size: ', self.Qformer.config.hidden_size, self.llm_model.config.hidden_size)
 
         if prompt_path:
             with open(prompt_path, 'r') as f:
@@ -170,7 +121,6 @@ class SkinGPT4(Blip2Base):
         else:
             self.prompt_list = []
 
-
     def vit_to_cpu(self):
         self.ln_vision.to("cpu")
         self.ln_vision.float()
@@ -178,50 +128,25 @@ class SkinGPT4(Blip2Base):
         self.visual_encoder.float()
 
     def encode_img(self, image):
-
-        ## always put vit to gpu
+        device = image.device
         if self.low_resource:
             self.vit_to_cpu()
             image = image.to("cpu")
 
-        device = image.device
-
         with self.maybe_autocast():
-            if 'falcon-40b-instruct' in self.llm_path:
-                manual_device = 'cuda:0'
-                self.visual_encoder.to(manual_device)
-                self.ln_vision.to(manual_device)
-                image_embeds = self.ln_vision(self.visual_encoder(image)).to(manual_device)
-                image_atts = torch.ones(image_embeds.size()[:-1], dtype=torch.long).to(manual_device)
+            image_embeds = self.ln_vision(self.visual_encoder(image)).to(device)
+            image_atts = torch.ones(image_embeds.size()[:-1], dtype=torch.long).to(device)
 
-                self.query_tokens.to(manual_device)
-                query_tokens = self.query_tokens.expand(image_embeds.shape[0], -1, -1).to(manual_device)
-                self.Qformer.bert.to(manual_device)
-                query_output = self.Qformer.bert(
-                    query_embeds=query_tokens,
-                    encoder_hidden_states=image_embeds,
-                    encoder_attention_mask=image_atts,
-                    return_dict=True,
-                )
+            query_tokens = self.query_tokens.expand(image_embeds.shape[0], -1, -1)
+            query_output = self.Qformer.bert(
+                query_embeds=query_tokens,
+                encoder_hidden_states=image_embeds,
+                encoder_attention_mask=image_atts,
+                return_dict=True,
+            )
 
-                self.llm_proj.to(manual_device)
-                inputs_llama = self.llm_proj(query_output.last_hidden_state.to(manual_device))
-                atts_llama = torch.ones(inputs_llama.size()[:-1], dtype=torch.long).to(manual_device)
-            else:
-                image_embeds = self.ln_vision(self.visual_encoder(image)).to(device)
-                image_atts = torch.ones(image_embeds.size()[:-1], dtype=torch.long).to(device)
-
-                query_tokens = self.query_tokens.expand(image_embeds.shape[0], -1, -1).to(device)
-                query_output = self.Qformer.bert(
-                    query_embeds=query_tokens,
-                    encoder_hidden_states=image_embeds,
-                    encoder_attention_mask=image_atts,
-                    return_dict=True,
-                )
-
-                inputs_llama = self.llm_proj(query_output.last_hidden_state)
-                atts_llama = torch.ones(inputs_llama.size()[:-1], dtype=torch.long).to(image.device)
-
+            inputs_llama = self.llama_proj(query_output.last_hidden_state)
+            atts_llama = torch.ones(inputs_llama.size()[:-1], dtype=torch.long).to(image.device)
         return inputs_llama, atts_llama
 
     def prompt_wrap(self, img_embeds, atts_img, prompt):
@@ -229,11 +154,11 @@ class SkinGPT4(Blip2Base):
             batch_size = img_embeds.shape[0]
             p_before, p_after = prompt.split('<ImageHere>')
             p_before_tokens = self.llm_tokenizer(
-                p_before, return_tensors="pt", add_special_tokens=False)
+                p_before, return_tensors="pt", add_special_tokens=False).to(img_embeds.device)
             p_after_tokens = self.llm_tokenizer(
-                p_after, return_tensors="pt", add_special_tokens=False)
-            p_before_embeds = self.llm_model.transformer.word_embeddings(p_before_tokens.input_ids).expand(batch_size, -1, -1)
-            p_after_embeds = self.llm_model.transformer.word_embeddings(p_after_tokens.input_ids).expand(batch_size, -1, -1)
+                p_after, return_tensors="pt", add_special_tokens=False).to(img_embeds.device)
+            p_before_embeds = self.llm_model.model.embed_tokens(p_before_tokens.input_ids).expand(batch_size, -1, -1)
+            p_after_embeds = self.llm_model.model.embed_tokens(p_after_tokens.input_ids).expand(batch_size, -1, -1)
             wrapped_img_embeds = torch.cat([p_before_embeds, img_embeds, p_after_embeds], dim=1)
             wrapped_atts_img = atts_img[:, :1].expand(-1, wrapped_img_embeds.shape[1])
             return wrapped_img_embeds, wrapped_atts_img
@@ -245,7 +170,7 @@ class SkinGPT4(Blip2Base):
         img_embeds, atts_img = self.encode_img(image)
         if hasattr(samples, 'question_split'):  # VQA dataset
             print('VQA Batch')
-            vqa_prompt = '### Instruction: <Img><ImageHere></Img> '
+            vqa_prompt = '###Human: <Img><ImageHere></Img> '
             img_embeds, atts_img = self.prompt_wrap(img_embeds, atts_img, vqa_prompt)
         elif self.prompt_list:
             prompt = random.choice(self.prompt_list)
@@ -278,10 +203,10 @@ class SkinGPT4(Blip2Base):
         bos = torch.ones([batch_size, 1],
                          dtype=to_regress_tokens.input_ids.dtype,
                          device=to_regress_tokens.input_ids.device) * self.llm_tokenizer.bos_token_id
-        bos_embeds = self.llm_model.transformer.word_embeddings(bos)
+        bos_embeds = self.llm_model.model.embed_tokens(bos)
         atts_bos = atts_img[:, :1]
 
-        to_regress_embeds = self.llm_model.transformer.word_embeddings(to_regress_tokens.input_ids)
+        to_regress_embeds = self.llm_model.model.embed_tokens(to_regress_tokens.input_ids)
         inputs_embeds = torch.cat([bos_embeds, img_embeds, to_regress_embeds], dim=1)
         attention_mask = torch.cat([atts_bos, atts_img, to_regress_tokens.attention_mask], dim=1)
 
@@ -336,7 +261,7 @@ class SkinGPT4(Blip2Base):
             device_8bit=device_8bit,
         )
 
-        ckpt_path = cfg.get("ckpt", "")  # load weights of MiniGPT-4
+        ckpt_path = cfg.get("ckpt", "")  # load weights of SkinGPT-4-llama2
         if ckpt_path:
             print("Load BLIP2-LLM Checkpoint: {}".format(ckpt_path))
             ckpt = torch.load(ckpt_path, map_location="cpu")

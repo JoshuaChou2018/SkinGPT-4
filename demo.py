@@ -7,17 +7,17 @@ import torch
 import torch.backends.cudnn as cudnn
 import gradio as gr
 
-from minigpt4.common.config import Config
-from minigpt4.common.dist_utils import get_rank
-from minigpt4.common.registry import registry
-from minigpt4.conversation.conversation import Chat, CONV_VISION
+from skingpt4.common.config import Config
+from skingpt4.common.dist_utils import get_rank
+from skingpt4.common.registry import registry
+from skingpt4.conversation.conversation import Chat, CONV_VISION
 
 # imports modules for registration
-from minigpt4.datasets.builders import *
-from minigpt4.models import *
-from minigpt4.processors import *
-from minigpt4.runners import *
-from minigpt4.tasks import *
+from skingpt4.datasets.builders import *
+from skingpt4.models import *
+from skingpt4.processors import *
+from skingpt4.runners import *
+from skingpt4.tasks import *
 
 
 def parse_args():
