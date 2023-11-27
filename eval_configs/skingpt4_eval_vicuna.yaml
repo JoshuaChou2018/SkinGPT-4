@@ -1,7 +1,7 @@
 model:
   arch: skin_gpt4
-  #model_type: pretrain_vicuna
-  model_type: pretrain_bloomz7b1
+  model_type: pretrain_vicuna
+  #model_type: pretrain_bloomz7b1
   #model_type: pretrain_bloomchat176b
   freeze_vit: True
   freeze_qformer: True
