@@ -1,4 +1,4 @@
-name: skingpt4
+name: skingpt4_llama2
 channels:
   - pytorch
   - defaults
