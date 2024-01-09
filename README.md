@@ -36,13 +36,11 @@ python demo.py --cfg-path eval_configs/skingpt4_eval_llama2_13bchat.yaml  --gpu-
 
 ## Illustraion of SkinGPT-4
 
-![fig1](https://cdn.jsdelivr.net/gh/JoshuaChou2018/oss@main/uPic/adReRl.fig1.png)
-
-
+![Figure_1](https://cdn.jsdelivr.net/gh/JoshuaChou2018/oss@main/uPic/ltkOLo.Figure_1.png)
 
 ## Examples of Skin disease diagnosis
 
-![fig3](https://cdn.jsdelivr.net/gh/JoshuaChou2018/oss@main/uPic/fig3.uiGBUM.png)
+![Figure_3](https://cdn.jsdelivr.net/gh/JoshuaChou2018/oss@main/uPic/Iv36iC.Figure_3.png)
 
 
 
