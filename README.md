@@ -17,9 +17,9 @@ mamba install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=
 
 ## Download our trained weights
 
-**Our previous trained weights for skin disease diagnosis with only base dataset and Llama2 could be downloaded at [skingpt4_llama2_13bchat_base_pretrain_stage2.pth](https://drive.google.com/file/d/1tcwEKSBl8J7wUKBJDwptcH7AwB5Ge7iW/view).** Then modify line 13 at SkinGPT-4-llama2/eval_configs/skingpt4_eval_llama2_13bchat.yaml to be the path of SkinGPT-4 weight.
+**Our previous trained weights for skin disease diagnosis with only base dataset and Llama2 could be downloaded at [skingpt4_llama2_13bchat_base_pretrain_stage2.pth](https://drive.google.com/file/d/1tcwEKSBl8J7wUKBJDwptcH7AwB5Ge7iW/view).** Then modify line 10 at SkinGPT-4-llama2/eval_configs/skingpt4_eval_llama2_13bchat.yaml to be the path of SkinGPT-4 weight.
 
-**Our previous trained weights for skin disease diagnosis with only step-1 dataset and Vicuna could be downloaded at [skingpt4_vicuna_v1.pth](https://drive.google.com/file/d/1PGBMBioipGxN5yfX6Okx4BGyPBm1prAF/view?usp=sharing).** Then modify line 13 at SkinGPT-4-llama2/eval_configs/skingpt4_eval_vicuna.yaml to be the path of SkinGPT-4 weight.
+**Our previous trained weights for skin disease diagnosis with only step-1 dataset and Vicuna could be downloaded at [skingpt4_vicuna_v1.pth](https://drive.google.com/file/d/1PGBMBioipGxN5yfX6Okx4BGyPBm1prAF/view?usp=sharing).** Then modify line 11 at SkinGPT-4-llama2/eval_configs/skingpt4_eval_vicuna.yaml to be the path of SkinGPT-4 weight.
 
 Please note:
 
@@ -35,7 +35,7 @@ Please note:
 git clone https://huggingface.co/meta-llama/Llama-2-13b-chat-hf
 ```
 
-Then modify line 17 at SkinGPT-4-llama2/skingpt4/configs/models/skingpt4_llama2_13bchat.yaml to be the path of Llama-2-13b-chat-hf.
+Then modify line 16 at SkinGPT-4-llama2/skingpt4/configs/models/skingpt4_llama2_13bchat.yaml to be the path of Llama-2-13b-chat-hf.
 
 ### Vicuna Version
 
@@ -52,7 +52,7 @@ pip install git+https://github.com/lm-sys/FastChat.git@v0.1.10
 python -m fastchat.model.apply_delta --base /path/to/models/llama-13b-hf  --target /path/to/models/vicuna  --delta /path/to/models/vicuna-13b-delta-v0
 ```
 
-Then modify line 17 at SkinGPT-4-llama2/skingpt4/configs/models/skingpt4_vicuna.yaml to be the path of vicuna.
+Then modify line 16 at SkinGPT-4-llama2/skingpt4/configs/models/skingpt4_vicuna.yaml to be the path of vicuna.
 
 ## Launching Demo Locally
 

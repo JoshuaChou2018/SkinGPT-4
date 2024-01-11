@@ -13,7 +13,6 @@ model:
   num_query_token: 32
 
   # llama2
-  #llm_model: "/home/zhouj0d/c2032/skingpt/SkinGPT-4-llama2/weights/Llama-2-13b-chat-hf"
   llm_model: "/home/zhouj0d/Science/PID27.ChatSkin/SkinGPT-4-llama2/weights/Llama-2-13b-chat-hf"
 
   # generation configs
