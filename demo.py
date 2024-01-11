@@ -148,4 +148,9 @@ with gr.Blocks() as demo:
     )
     clear.click(gradio_reset, [chat_state, img_list], [chatbot, image, text_input, upload_button, chat_state, img_list], queue=False)
 
+    gr.Markdown("""
+This site was created by King Abdullah University of Science and Technology (KAUST).
+The generated results are for reference only, please follow the doctor's advice.
+""")
+
 demo.launch(share=True, enable_queue=True, server_port=5905, server_name='0.0.0.0')
