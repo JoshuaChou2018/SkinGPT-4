@@ -48,8 +48,9 @@ git clone https://huggingface.co/lmsys/vicuna-13b-delta-v0
 git clone https://huggingface.co/huggyllama/llama-13b
 
 pip install git+https://github.com/lm-sys/FastChat.git@v0.1.10
+pip install transformers==4.28.0
 
-python -m fastchat.model.apply_delta --base /path/to/models/llama-13b-hf  --target /path/to/models/vicuna  --delta /path/to/models/vicuna-13b-delta-v0
+python -m fastchat.model.apply_delta --base ./llama-13b --target ./vicuna --delta ./vicuna-13b-delta-v0
 ```
 
 Then modify line 16 at SkinGPT-4-llama2/skingpt4/configs/models/skingpt4_vicuna.yaml to be the path of vicuna.
