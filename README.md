@@ -23,6 +23,8 @@ mamba install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=
 
 Please note:
 
+- The released trained model above cannot be used for skin disease diagnosis, they can only be used for testing code.
+
 - The latest model trained with both **public skin disease datasets** and the **proprietary skin disease dataset** based on **falcon-40b-instruct** (deprecated) and **llama-2-13b-chat-hf** (code published only) are **not publicly available** currently due to privacy issues.
 
 - Please feel free to keep in touch with **xin.gao@kaust.edu.sa** and **juexiao.zhou@kaust.edu.sa** for potential collaboration.
