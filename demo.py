@@ -104,12 +104,26 @@ def gradio_answer(chatbot, chat_state, img_list, num_beams, temperature):
 title = """<h1 align="center">Demo of SkinGPT-4</h1>"""
 description = """<h3>This is the demo of SkinGPT-4 (version June, 2023). Upload your images and start chatting!</h3>"""
 article = """ """
+disclaimer_text = """
+Disclaimer:
+
+This SkinGPT-4 application is provided for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. It is not intended to replace the expertise and judgment of healthcare professionals.
+
+The user acknowledges and understands that the information provided by SkinGPT-4 is based on a machine learning model and may not be accurate or up-to-date. The application is not capable of providing a definitive diagnosis, and the user should consult with a qualified healthcare professional for proper medical advice.
+
+By using this application, the user agrees that they are solely responsible for their health and well-being. The developer and the model creators disclaim any liability for any injury, damage, or harm arising from the use of SkinGPT-4.
+
+If you have a medical emergency, please call your doctor or emergency services immediately.
+
+By clicking 'Upload' below, you acknowledge that you have read and understood this disclaimer and agree to use SkinGPT-4 at your own risk.
+"""
 #TODO show examples below
 
 with gr.Blocks() as demo:
     gr.Markdown(title)
     gr.Markdown(description)
     gr.Markdown(article)
+    gr.Markdown(disclaimer_text)
 
     with gr.Row():
         with gr.Column(scale=0.5):
