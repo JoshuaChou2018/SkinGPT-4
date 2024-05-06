@@ -73,17 +73,17 @@ python demo.py --cfg-path eval_configs/skingpt4_eval_vicuna.yaml  --gpu-id 0
 
 ## Illustraion of SkinGPT-4
 
-![Figure_1](https://cdn.jsdelivr.net/gh/JoshuaChou2018/oss@main/uPic/ltkOLo.Figure_1.png)
+![Figure_1](https://cdn.jsdelivr.net/gh/JoshuaChou2018/oss@main/uPic/EQFQXz.Figure_1.png)
 
 ## Examples of Skin disease diagnosis
 
-![Figure_3](https://cdn.jsdelivr.net/gh/JoshuaChou2018/oss@main/uPic/Iv36iC.Figure_3.png)
+![Figure_3](https://cdn.jsdelivr.net/gh/JoshuaChou2018/oss@main/uPic/vXavYQ.Figure_3.png)
 
 
 
 ## Clinical Evaluation
 
-![fig4](https://cdn.jsdelivr.net/gh/JoshuaChou2018/oss@main/uPic/B40U3b.fig4.png)
+![Figure_4](https://cdn.jsdelivr.net/gh/JoshuaChou2018/oss@main/uPic/vrHwZ4.Figure_4.png)
 
 
 
