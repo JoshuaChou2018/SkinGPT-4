@@ -1,10 +1,10 @@
 # Pre-trained Multimodal Large Language Model Enhances Dermatological Diagnosis using SkinGPT-4
 
-[Juexiao Zhou](https://www.joshuachou.ink/), Xiaonan He, Liyuan Sun, Jiannan Xu, Xiuying Chen, Yuetan Chu, Longxi Zhou, Xingyu Liao, Bin Zhang, Xin Gao
+[Juexiao Zhou](https://www.joshuachou.ink/), Xiaonan He, Liyuan Sun, Jiannan Xu, Xiuying Chen, Yuetan Chu, Longxi Zhou, Xingyu Liao, Bin Zhang, Shawn Afvari, Xin Gao
 
 King Abdullah University of Science and Technology, KAUST
 
-<a href='SkinGPT_4_manuscript_v7.pdf'><img src='https://img.shields.io/badge/Paper-PDF-red'></a>
+<a href='s41467-024-50043-3.pdf'><img src='https://img.shields.io/badge/Paper-PDF-red'></a>
 
 ## Installation
 
@@ -21,9 +21,9 @@ conda install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=
 
 **Our previous trained weights for skin disease diagnosis with only step-1 dataset and Vicuna could be downloaded at [skingpt4_vicuna_v1.pth](https://drive.google.com/file/d/1PGBMBioipGxN5yfX6Okx4BGyPBm1prAF/view?usp=sharing).** Then modify line 11 at SkinGPT-4-llama2/eval_configs/skingpt4_eval_vicuna.yaml to be the path of SkinGPT-4 weight.
 
-Please note:
+**Please note:**
 
-- The released trained model above cannot be used for skin disease diagnosis, they can only be used for testing code.
+- The released trained model above **cannot be used for skin disease diagnosis**, they can **only be used for testing code**.
 
 - The latest model trained with both **public skin disease datasets** and the **proprietary skin disease dataset** based on **falcon-40b-instruct** (deprecated) and **llama-2-13b-chat-hf** (code published only) are **not publicly available** currently due to privacy issues.
 
@@ -97,15 +97,21 @@ python demo.py --cfg-path eval_configs/skingpt4_eval_vicuna.yaml  --gpu-id 0
 
 ## Citation
 
-If you're using SkinGPT-4 in your research or applications, please cite SkinGPT-4 using this BibTeX:
+Our paper has been accepted by **Nature Communications**.
+
+![image-20240708131953458](https://cdn.jsdelivr.net/gh/JoshuaChou2018/oss@main/uPic/ce5kAk.image-20240708131953458.png)
+
+If you find SkinGPT-4 to be helpful in your research or applications, please cite SkinGPT-4 using this BibTeX:
 
 ```
-@misc{zhou2023skingpt,
-      title={SkinGPT-4: An Interactive Dermatology Diagnostic System with Visual Large Language Model}, 
-      author={Juexiao Zhou and Xiaonan He and Liyuan Sun and Jiannan Xu and Xiuying Chen and Yuetan Chu and Longxi Zhou and Xingyu Liao and Bin Zhang and Xin Gao},
-      year={2023},
-      eprint={2304.10691},
-      archivePrefix={arXiv},
-      primaryClass={eess.IV}
+@article{zhou2024pre,
+  title={Pre-trained multimodal large language model enhances dermatological diagnosis using SkinGPT-4},
+  author={Zhou, Juexiao and He, Xiaonan and Sun, Liyuan and Xu, Jiannan and Chen, Xiuying and Chu, Yuetan and Zhou, Longxi and Liao, Xingyu and Zhang, Bin and Afvari, Shawn and others},
+  journal={Nature Communications},
+  volume={15},
+  number={1},
+  pages={5649},
+  year={2024},
+  publisher={Nature Publishing Group UK London}
 }
 ```
