@@ -1,6 +1,6 @@
 # Pre-trained Multimodal Large Language Model Enhances Dermatological Diagnosis using SkinGPT-4
 
-[Juexiao Zhou](https://www.joshuachou.ink/), Xiaonan He, Liyuan Sun, Jiannan Xu, Xiuying Chen, Yuetan Chu, Longxi Zhou, Xingyu Liao, Bin Zhang, Shawn Afvari, Xin Gao
+[Juexiao Zhou](https://www.joshuachou.ink/about), Xiaonan He, Liyuan Sun, Jiannan Xu, Xiuying Chen, Yuetan Chu, Longxi Zhou, Xingyu Liao, Bin Zhang, Shawn Afvari, Xin Gao
 
 King Abdullah University of Science and Technology, KAUST
 
