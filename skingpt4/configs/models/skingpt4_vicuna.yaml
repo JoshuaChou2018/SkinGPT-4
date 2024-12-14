@@ -13,7 +13,7 @@ model:
   num_query_token: 32
 
   # Vicuna
-  llm_model: "/home/zhouj0d/Science/PID27.ChatSkin/SkinGPT-4-llama2/weights/vicuna"
+  llm_model: "lmsys/vicuna-13b-delta-v0"
 
   # generation configs
   prompt: ""
